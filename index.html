@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebraic Expansions Trainer | Guided Math Practice</title>
+    <meta name="description"
+        content="A step-by-step guided trainer for algebraic expansion and simplification. Practice with real-time feedback and hints.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <!-- External Libraries (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.11.0/lib/browser/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <aside id="sidebar">
+        <div class="brand">Algebraic Expansions Trainer</div>
+
+        <!-- Current Problem -->
+        <div class="control-group">
+            <h2>Current Problem</h2>
+            <div class="problem-container">
+                <div id="math-display"><span style="color:var(--text-dim);font-size:0.9rem;">No problem yet</span></div>
+            </div>
+            <div
+                style="display:flex; gap:0.6rem; flex-wrap:wrap; align-items:stretch; justify-content:space-between; margin-top:0.4rem;">
+                <button class="btn" style="flex:1; padding:0.6rem; min-width:110px;" onclick="app.generateProblem()">New
+                    Problem</button>
+                <div id="timer-display"
+                    style="flex:1; min-width:100px; display:flex; align-items:center; justify-content:center; font-family:monospace; font-size:0.88rem; font-weight:600; color:var(--accent-secondary); background:rgba(0,0,0,0.5); padding:0 0.5rem; border-radius:0.5rem; border:1px solid var(--glass-border); letter-spacing:1px;">
+                    00:00:00</div>
+                <button class="btn btn-secondary" id="timer-btn" style="flex:1; min-width:70px; padding:0.6rem 0.9rem;"
+                    onclick="app.toggleTimer()">Start</button>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="control-group">
+            <h2>Parameters</h2>
+
+            <!-- Category 1: Hints -->
+            <div class="param-section">
+                <div class="param-category-title">Hints</div>
+                <div class="param-options inline">
+                    <label class="option-item">
+                        <input type="radio" name="hints" id="opt-hints-no" value="no"> No
+                    </label>
+                    <label class="option-item">
+                        <input type="radio" name="hints" id="opt-hints-yes" value="yes" checked> Yes
+                    </label>
+                </div>
+            </div>
+
+            <!-- Category 2: Number of Terms -->
+            <div class="param-section">
+                <div class="param-category-title">Number of Terms</div>
+                <div class="param-options inline">
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-terms-1" checked> 1 Term
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-terms-2"> 2 Terms
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-terms-3"> 3 Terms
+                    </label>
+                </div>
+            </div>
+
+            <!-- Category 3: Type of variables -->
+            <div class="param-section">
+                <div class="param-category-title">Type of variables</div>
+                <div class="param-options inline">
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-var-x" checked> x
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-var-y"> y
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-var-z"> z
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-var-high"> higher power
+                    </label>
+                </div>
+            </div>
+
+            <!-- Category 4: Types of terms -->
+            <div class="param-section">
+                <div class="param-category-title">Types of terms</div>
+                <div class="param-options">
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-type-const" checked> Constants: a
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-type-linear" checked> Linear: a(x + b)
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-type-quad1"> Quadratic: (x + a)(x + b)
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-type-quad2"> Quadratic: x² + bx + c
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-type-high"> Higher powers: axᵇ
+                    </label>
+                </div>
+            </div>
+
+            <!-- Category 5: Nesting -->
+            <div class="param-section">
+                <div class="param-category-title">Nesting</div>
+                <div class="param-options">
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-nest-no" checked> No nesting
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-nest-1" checked> Level 1: ( )
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-nest-2"> Level 2: [ ( ) ]
+                    </label>
+                    <label class="option-item">
+                        <input type="checkbox" id="opt-nest-3"> Level 3: { [ ( ) ] }
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <p style="font-size:0.78rem; color:var(--text-dim);">
+                Tip: Use <code style="color:var(--accent-secondary);">^</code> for powers,
+                <code style="color:var(--accent-secondary);">/</code> for fractions,
+                <code style="color:var(--accent-secondary);">()</code> for grouping.
+            </p>
+        </div>
+    </aside>
+
+    <main id="main-workspace">
+        <div class="workspace-header">
+            <h1>Guided Step-by-Step Training</h1>
+            <p style="color:var(--text-dim);">Work through each step to expand the algebraic expression. Click <strong>+
+                    Add Step</strong> to reveal the next step prompt, then enter your answer and click
+                <strong>Check</strong>.</p>
+        </div>
+
+        <div id="steps-container" class="steps-container">
+            <!-- Steps injected here -->
+        </div>
+
+        <div id="empty-state">
+            Click <strong>"New Problem"</strong> to generate a question, then <strong>"+ Add Step"</strong> to begin
+            solving.
+        </div>
+
+        <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+            <button class="btn" id="add-step-btn" onclick="app.addStep()">+ Add Step</button>
+            <button class="btn btn-secondary" onclick="app.clearWorkspace()">Reset Workspace</button>
+        </div>
+    </main>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
