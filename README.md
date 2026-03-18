@@ -4,7 +4,8 @@ This web app is to for students to practice their algebraic expansion and simpli
 ## A. Setting the Parameters ##
 1.  Checked boxes augment the difficulty of the questions by allowing the described case.
 2.  Some boxes are checked by default. Users may uncheck them.
-3.  Clicking the "new problem" button will apply the parameter settings on the new generated problem.
+3.  Checking the Hints box will allow more detail prompts when incorrect answers are submitted.
+4.  Clicking the "new problem" button will apply the parameter settings on the new generated problem.
 
 ## B. Training on the Algebraic Expansion Trainer ##
 1.  To start answering a question, click "add step" and follow the prompt.
