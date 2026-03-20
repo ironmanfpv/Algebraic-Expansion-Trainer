@@ -1,5 +1,5 @@
 # Algebraic Expansion Trainer
-This web app is to for students to practice their algebraic expansion and simplification skills. Questions are generated with different level of difficulty. For gamification fun, a timer is included to record the total time taken to express a generated fractional expression into its partial fractions correctly.
+This web app is designed for students to practice their algebraic expansion and simplification skills. Questions are generated with different level of difficulty. For gamification fun, a timer is included to record the total time taken to express a generated fractional expression into its partial fractions correctly.
 
 
 ## A. Setting the Parameters ##
